@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #25003a;
+}
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 20px 0;
+  overflow: hidden;
+  border: 3px solid orange; /* Adicionando borda laranja */
+}
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.links-container {
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.link-item {
+  margin-bottom: 15px;
+}
+.link-item a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+.link-item a:hover {
+  background-color: #8a8989;
+}
+.link-item img {
+  width: 30px; /* Tamanho da imagem */
+  margin-right: 10px; /* Espaçamento entre a imagem e o texto */
+}
