@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jogo da Cobrinha</title>
+  <link rel="shortcut icon" type="imagex/png" href="..\img\icones\snake.png">
+
+  <style>
+    #game-board {
+      position: relative;
+      width: 800px;
+      height: 500px;
+      border: 1px solid #000;
+      margin: 0 auto;
+    }
+
+    .snake-body {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: rgb(18, 139, 3);
+    }
+
+    #food {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #f00;
+      border-radius: 100px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 3px 30px;
+      font-size: 15px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      color: #fff;
+      background-color: #4c66af;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px #999;
+    }
+
+    .button:hover {
+      background-color: #2115d4
+    }
+
+    .button:active {
+      background-color: #2115d4;
+      box-shadow: 0 5px #7e7e7e;
+      transform: translateY(4px);
+    }
+
+    .pontos {
+      position: absolute; 
+      top: 15px; 
+      margin-left: 70%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div style="position: relative;">
+    <h1>
+      <center> Jogo da Cobrinha</center>
+    </h1>
+
+    <div class="pontos">
+      Pontos: <span id="score">0</span>
+    </div>
+  </div>
+
+  <div id="game-board"></div>
+
+  <center>
+    <button class="button" id="start-button">Iniciar Jogo</button>
+  </center>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const campoJogo = document.getElementById("game-board");
+      const larguraCampo = 800;
+      const alturaCampo = 500;
+      const tamanhoGrade = 20;
+      const velocidadeInicialCobrinha = 200;
+
+      let cobrinha = [{ x: 0, y: 0 }];
+      let comida = {};
+      let direcao = "direita";
+      let idIntervalo;
+      let velocidade = velocidadeInicialCobrinha;
+      let pontos = 0;
+      let teclaEspaco = false;
+
+      function criarComida() {
+        comida = {
+          x: Math.floor(Math.random() * (larguraCampo / tamanhoGrade)) * tamanhoGrade,
+          y: Math.floor(Math.random() * (alturaCampo / tamanhoGrade)) * tamanhoGrade
+        };
+
+        const elementoComida = document.createElement("div");
+        elementoComida.style.left = `${comida.x}px`;
+        elementoComida.style.top = `${comida.y}px`;
+        elementoComida.id = "food";
+        campoJogo.appendChild(elementoComida);
+      }
+
+      function atualizarCobrinha() {
+        const cabeca = { x: cobrinha[0].x, y: cobrinha[0].y };
+
+        if (direcao === "direita") {
+          cabeca.x += tamanhoGrade;
+        } else if (direcao === "esquerda") {
+          cabeca.x -= tamanhoGrade;
+        } else if (direcao === "cima") {
+          cabeca.y -= tamanhoGrade;
+        } else if (direcao === "baixo") {
+          cabeca.y += tamanhoGrade;
+        }
+
+        cobrinha.unshift(cabeca);
+
+        if (cabeca.x === comida.x && cabeca.y === comida.y) {
+          campoJogo.removeChild(document.getElementById("food"));
+          criarComida();
+          velocidade -= 5;
+          pontos++;
+          document.getElementById("score").innerHTML = pontos;
+        } else {
+          cobrinha.pop();
+        }
+
+        const colidiu = cobrinha.slice(1).some(part => part.x === cabeca.x && part.y === cabeca.y);
+
+        if (cabeca.x < 0 || cabeca.x >= larguraCampo || cabeca.y < 0 || cabeca.y >= alturaCampo || colidiu) {
+          clearInterval(idIntervalo);
+          alert("Fim de jogo!");
+          location.reload();
+          teclaEspaco = false;
+          document.getElementById("start-button").disabled = false;
+        } else {
+          renderizarCobrinha();
+        }
+      }
+
+      function renderizarCobrinha() {
+        campoJogo.innerHTML = "";
+
+        cobrinha.forEach(part => {
+          const elementoParte = document.createElement("div");
+          elementoParte.className = "snake-body";
+          elementoParte.style.left = `${part.x}px`;
+          elementoParte.style.top = `${part.y}px`;
+          campoJogo.appendChild(elementoParte);
+        });
+
+        const elementoComida = document.createElement("div");
+        elementoComida.style.left = `${comida.x}px`;
+        elementoComida.style.top = `${comida.y}px`;
+        elementoComida.id = "food";
+        campoJogo.appendChild(elementoComida);
+      }
+
+      function lidarComPressionamentoTecla(evento) {
+        const teclaPressionada = evento.key;
+
+        if (teclaPressionada === "ArrowUp" && direcao !== "baixo") {
+          direcao = "cima";
+        } else if (teclaPressionada === "ArrowDown" && direcao !== "cima") {
+          direcao = "baixo";
+        } else if (teclaPressionada === "ArrowLeft" && direcao !== "direita") {
+          direcao = "esquerda";
+        } else if (teclaPressionada === "ArrowRight" && direcao !== "esquerda") {
+          direcao = "direita";
+        }
+      }
+
+      function iniciarJogo() {
+        criarComida();
+        idIntervalo = setInterval(atualizarCobrinha, velocidade);
+        document.getElementById("start-button").disabled = true;
+        teclaEspaco = true;
+      }
+
+      document.getElementById("start-button").addEventListener("click", iniciarJogo);
+
+      document.addEventListener("keydown", lidarComPressionamentoTecla);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.code === "Space" && teclaEspaco === false) {
+          iniciarJogo();
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>
