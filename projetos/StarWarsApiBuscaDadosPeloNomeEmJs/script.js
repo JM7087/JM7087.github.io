@@ -9,7 +9,7 @@
 
       // Exibe o ícone de carregamento
       resultDiv.innerHTML = `
-      <div class="loading-icon" id="loadingIcon">
+      <div>
         <img src="img/carregando.gif" alt="Carregando...">
       </div>` 
 
