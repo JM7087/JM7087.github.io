@@ -4,7 +4,6 @@
     characterName = characterName.replace(/ /g, "%20"); // Substituir espaços por '%20'
 
     const resultDiv = document.getElementById("result");
-    const loadingIcon = document.getElementById("loadingIcon");
 
     if (characterName.trim() !== "") {
 
