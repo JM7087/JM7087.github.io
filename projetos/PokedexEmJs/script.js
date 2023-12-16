@@ -8,7 +8,7 @@ function buscarPokemon() {
 
   if (pokemonNameOuNumero.trim() !== "") {
 
-      resultDiv.innerHTML = `
+    resultDiv.innerHTML = `
         <div>
           <img src="img/carregando.gif" alt="Carregando...">
         </div>`;
@@ -27,22 +27,34 @@ function buscarPokemon() {
 
   // Função para exibir os detalhes do Pokémon
   function exibirPokemon(pokemonData) {
-    const { name, height, weight, types, id } = pokemonData;
-    const imagemGif =
-      pokemonData.sprites.versions["generation-v"]["black-white"].animated
-        .front_default;
+    const { name, height, weight, types, id, sprites, base_experience, abilities} = pokemonData;
 
-    console.log(pokemonData);
+    const abilitiesNames = abilities.map(ability => ability.ability.name).join(', ')
+
+    let PokemonImagem
+
+    const imagemGif =
+      pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default;
+
+    if (imagemGif == null) {
+       PokemonImagem = sprites.front_default;
+
+    }
+    else {
+      PokemonImagem = imagemGif
+    }
 
     const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = `
+    resultDiv.innerHTML = `
           <h2>${name}</h2>
-          <img src="${imagemGif}" alt="${name}">
+          <img src="${PokemonImagem}" alt="${name}">
           <p><strong>Altura:</strong> ${height} decímetros</p>
           <p><strong>Peso:</strong> ${weight} hectogramas</p>
+          <p><strong>Nivel Base de Experiência:</strong> ${base_experience}</p>
+          <p><strong>Habilidades:</strong> ${abilitiesNames}</p>
           <p><strong>Tipo:</strong> ${types
-            .map((type) => type.type.name)
-            .join(", ")}</p>
+        .map((type) => type.type.name)
+        .join(", ")}</p>
           <p><strong>Numero:</strong> ${id}</p>
           <!-- Adicione outras informações que desejar -->
         `;
