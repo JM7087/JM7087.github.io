@@ -11,7 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let idIntervalo;
   let velocidade = velocidadeInicialCobrinha;
   let pontos = 0;
+  let recorde = localStorage.getItem('recorde') || 0
   let teclaEspaco = false;
+  let Backspace = false;
+
+  document.getElementById("recorde").innerHTML = recorde;
 
   function criarComida() {
     comida = {
@@ -49,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
       criarComida();
       velocidade -= 5;
       pontos++;
-      document.getElementById("score").innerHTML = pontos;
+      document.getElementById("pontos").innerHTML = pontos;
+      atualizarRecorde();
     } else {
       cobrinha.pop();
     }
@@ -69,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Fim de jogo!");
       location.reload();
       teclaEspaco = false;
+      Backspace = false;
       document.getElementById("start-button").disabled = false;
     } else {
       renderizarCobrinha();
@@ -141,11 +147,19 @@ document.addEventListener("DOMContentLoaded", () => {
     idIntervalo = setInterval(atualizarCobrinha, velocidade);
     document.getElementById("start-button").disabled = true;
     teclaEspaco = true;
+    Backspace = true;
   }
 
-  document
-    .getElementById("start-button")
-    .addEventListener("click", iniciarJogo);
+  function atualizarRecorde() {
+    // Atualiza o recorde no localStorage se necessário
+    if (pontos > recorde) {
+      recorde = pontos;
+      localStorage.setItem('recorde', recorde);
+      document.getElementById("recorde").innerHTML = recorde;
+    }
+  }
+
+  document.getElementById("start-button").addEventListener("click", iniciarJogo);
   document.addEventListener("keydown", lidarComPressionamentoTecla);
   campoJogo.addEventListener("click", lidarComCliqueMouse);
 
@@ -154,4 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
       iniciarJogo();
     }
   });
+  // zera recorde ao apertar a tecla bacspace
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "Backspace" && Backspace === false) {
+      recorde = 0
+      localStorage.setItem('recorde', recorde);
+      document.getElementById("recorde").innerHTML = recorde;
+    }
+  });
+
 });
