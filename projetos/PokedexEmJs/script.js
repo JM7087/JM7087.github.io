@@ -1,8 +1,7 @@
 // Função para buscar o Pokémon
 function buscarPokemon() {
-  let pokemonNameOuNumero = document
-    .getElementById("characterName")
-    .value.toLowerCase();
+
+  let pokemonNameOuNumero = document.getElementById("characterName").value.toLowerCase();
 
   const resultDiv = document.getElementById("result");
 
