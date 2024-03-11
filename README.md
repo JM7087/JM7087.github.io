@@ -4,44 +4,16 @@ Este repositório contém uma página simples de links, com um perfil e uma list
 
 ## Capturas de Tela
 
-![Captura de Tela 1](https://blogger.googleusercontent.com/img/a/AVvXsEie5y60ADDQRcIgGF3EMkO8nRLXjb7BL9tUfIGYTWHCyqv5m4_BFHpmyybTlM-5ieII4q19xeSYf6aOYuXzJRCIF9VNc5vxCjBK3i3omK5ktb36OHBxIY06JyuUW18ceBf-8CTIEJYyxas8TqdJbEhoLxG2-bxbmWlQYFjyvnrCNokE57NgluLpev4wW-DQ)
+![Captura de Tela 1](https://blogger.googleusercontent.com/img/a/AVvXsEj7iBRegM-FeAwHfomL7DLGnNOA3GiefcJ_La4ExK96ozzypZnKYD7rKa4s8pTBJHT3uXdC_Fx_7MFYWU2s7xxi0St5T3aTAtK__SMiNuG-cf7B-NNfu3W7s6AN8g545bTBXybZK6WQHNSqh28Z0PQP-E5UrnGkpRhrg-Gb_81JdB31nekSE6BzSo8rCwY)
 
-
-## Conteúdo
-
-O projeto consiste em:
-
-- **index.html**: Este arquivo HTML contém a estrutura da página, incluindo a imagem de perfil e a lista de links.
-- **styles.css**: Este arquivo CSS contém os estilos aplicados à página HTML para criar o layout e o design visual.
-
-## Estrutura de Arquivos
-
-```plaintext
-.
-├── img/
-│   ├── Capturar.JPG       # Imagem de perfil
-│   ├── icone.png          # Ícone para o favicon
-│   └── icones/            # Diretório com ícones das redes sociais
-│       ├── github.png
-│       ├── linkedin.png
-│       ├── cv.png
-│       ├── jm7087.png
-│       ├── neetLofi.png
-│       ├── sites.png
-│       ├── instagram.png
-│       └── x.png
-├── index.html             # Arquivo HTML principal
-└── styles.css             # Arquivo CSS para estilização
-```
 
 ## Link da Página
 
-https://linkes.jm7087.com
+https://links.jm7087.com
 
-## Contribuindo
+## Repositório Base do Projeto
 
-Contribuições são bem-vindas! Se você deseja melhorar este jogo, sinta-se à vontade para fazer um fork deste repositório, 
-fazer suas alterações e criar um pull request.
+[Lista de Links Personalizados](https://github.com/JM7087/lista-de-links-personalizado/)
 
 ## Créditos
 

@@ -1,7 +1,8 @@
 // Função para buscar o Pokémon
 function buscarPokemon() {
-
-  let pokemonNameOuNumero = document.getElementById("characterName").value.toLowerCase();
+  let pokemonNameOuNumero = document
+    .getElementById("characterName")
+    .value.toLowerCase();
 
   const resultDiv = document.getElementById("result");
 
@@ -43,21 +44,31 @@ function buscarPokemon() {
       PokemonImagem = imagemGif
     }
 
+    // para converter Decimetros é Hectogramas em Metros é Kg 
+    // é só dividir o valor de height e weight por 10
+
+    const altura = TrocarPontoPorVirgula(height / 10) 
+
+    const peso = TrocarPontoPorVirgula(weight / 10) 
+
+
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = `
           <h2>${name}</h2>
           <img src="${PokemonImagem}" alt="${name}">
-          <p><strong>Altura:</strong> ${height} decímetros</p>
-          <p><strong>Peso:</strong> ${weight} hectogramas</p>
+          <p><strong>Altura:</strong> ${altura} Metros</p>
+          <p><strong>Peso:</strong> ${peso} Kg</p>
           <p><strong>Nivel Base de Experiência:</strong> ${base_experience}</p>
           <p><strong>Habilidades:</strong> ${abilitiesNames}</p>
-          <p><strong>Tipo:</strong> ${types
-        .map((type) => type.type.name)
-        .join(", ")}</p>
+          <p><strong>Tipo:</strong> ${types.map((type) => type.type.name).join(", ")}</p>
           <p><strong>Numero:</strong> ${id}</p>
           <!-- Adicione outras informações que desejar -->
         `;
   }
+}
+
+function TrocarPontoPorVirgula(valor) {
+  return valor.toString().replace(".", ",")
 }
 
 // Ouvinte de evento para o botão "Buscar"
