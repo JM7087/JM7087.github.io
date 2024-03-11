@@ -13,7 +13,7 @@
         <img src="img/carregando.gif" alt="Carregando...">
       </div>` 
 
-      fetch(`https://swapi.dev/api/people/?search=${characterName}`)
+      fetch(`https://swapi.py4e.com/api/people/?search=${characterName}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.results.length > 0) {
