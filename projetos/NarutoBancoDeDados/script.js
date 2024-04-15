@@ -13,7 +13,7 @@ function buscarPersonagem() {
 
     resultDiv.innerHTML = `
       <div>
-        <img src="img/carregando-${numeroDaImagem}.gif" alt="Carregando...">
+        <img src="img/carregando-${numeroDaImagem}.gif" class="img_caregando" alt="Carregando...">
       </div>`;
 
     // Verifica se o characterName é um número
