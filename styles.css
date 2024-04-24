@@ -58,6 +58,18 @@ body {
   margin-right: 10px;
 }
 
+.nome {
+  font-size: 50px;
+  color: #fff; 
+  margin-block-end: 5px;
+}
+
+.proficao {
+  font-size: 20px;
+  color: #fff;
+  margin-block-end: 15px;
+}
+
 /* Estilos para dispositivos móveis */
 @media only screen and (max-width: 768px) {
   .profile-img {
