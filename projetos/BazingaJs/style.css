@@ -1,0 +1,30 @@
+button {
+  background-image: url("img/bazinga.png");
+  background-size: cover;
+  width: 500px;
+  height: 500px;
+  border: none;
+  background-color: transparent; /* Fundo transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background-color: #ed2222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Estilos para dispositivos móveis */
+@media only screen and (max-width: 768px) {
+  
+  button {
+    width: 380px;
+    height: 350px;
+  }
+
+}
