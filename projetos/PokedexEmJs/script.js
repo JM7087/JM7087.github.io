@@ -8,6 +8,9 @@ function buscarPokemon() {
 
   if (pokemonNameOuNumero.trim() !== "") {
 
+    // Remove o display: none antes de começar a exibir os resultados
+    resultDiv.style.display = "block";
+    
     resultDiv.innerHTML = `
         <div>
           <img src="img/carregando.gif" alt="Carregando...">

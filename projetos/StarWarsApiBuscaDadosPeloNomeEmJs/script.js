@@ -7,6 +7,9 @@
 
     if (characterName.trim() !== "") {
 
+      // Remove o display: none antes de começar a exibir os resultados
+      resultDiv.style.display = "block";
+
       // Exibe o ícone de carregamento
       resultDiv.innerHTML = `
       <div>
