@@ -38,6 +38,7 @@ button:hover {
 }
 
 .result {
+  display: none; /* display: none para ao iniciar */
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;

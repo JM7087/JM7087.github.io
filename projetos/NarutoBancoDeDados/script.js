@@ -11,6 +11,9 @@ function buscarPersonagem() {
     // selecionar imagem de carregando de forma aleatória
     let numeroDaImagem = Math.floor(Math.random() * 3) + 1;
 
+    // Remove o display: none antes de começar a exibir os resultados
+    resultDiv.style.display = "block";
+    
     resultDiv.innerHTML = `
       <div>
         <img src="img/carregando-${numeroDaImagem}.gif" class="img_caregando" alt="Carregando...">
