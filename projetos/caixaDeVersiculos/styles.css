@@ -10,6 +10,16 @@ body {
     box-sizing: border-box; /* Certifique-se de incluir o padding no cálculo de altura */
 }
 
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 45px;
+    text-align: center;
+}
+
+/*--------------------------------------------------*/
+
+/* Estilo inicial */
 .container {
     text-align: center;
     background-color: #fff;
@@ -20,14 +30,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 45px;
-    text-align: center;
-}
-
-/* Estilo inicial */
 .verse-box {
     margin: 20px 0;
     padding: 20px;
@@ -45,6 +47,13 @@ h1 {
     border: 1px solid black;
     box-shadow: 0 0 10px rgba(0, 0, 0, 1.1);
 }
+
+.container.clicked {
+    background-color: transparent;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.0);
+
+}
+/*------------------------------------------*/
 
 .verse-reference {
     font-size: 40px;
