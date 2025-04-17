@@ -2,18 +2,15 @@
 name: Deploy GitHub Pages
 
 on:
-  # Gatilhos automáticos para o workflow
   push:
     branches: ["main"]
   workflow_dispatch:
 
-# Definindo permissões para o GITHUB_TOKEN
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Configuração de execução simultânea
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -25,13 +22,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Fazer checkout do código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Fazer upload do artefato
+      - name: Fazer upload do artefato para o GitHub Pages
         uses: actions/upload-pages-artifact@v1
         with:
           path: '.'
