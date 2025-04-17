@@ -1,5 +1,5 @@
 # Fluxo de trabalho simples para implantar conteúdo estático no GitHub Pages
-name: index.html
+name: Deploy para GitHub Pages
 
 on:
   # Executa quando há envios direcionados para o branch padrão
@@ -15,29 +15,30 @@ permissions:
   pages: write
   id-token: write
 
-# Permite apenas uma implantação simultânea, pulando execuções na fila entre a execução em andamento e a mais recente na fila.
-# No entanto, NÃO cancela execuções em andamento, pois queremos permitir que essas implantações de produção sejam concluídas.
+# Permite apenas uma implantação simultânea
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Único trabalho de implantação, pois estamos apenas implantando
+  # Único trabalho de implantação
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout do código
         uses: actions/checkout@v4
+
       - name: Configurar Páginas
         uses: actions/configure-pages@v4
-      - name: Upload do artefato
-        uses: actions/upload-pages-artifact@v2
+
+      - name: Upload do artefato para GitHub Pages
+        uses: actions/upload-pages-artifact@v1
         with:
-          # Fazer upload do repositório inteiro
           path: '.'
+
       - name: Implantação no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
