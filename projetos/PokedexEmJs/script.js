@@ -1,4 +1,3 @@
-// Função para buscar o Pokémon
 function buscarPokemon() {
   let pokemonNameOuNumero = document
     .getElementById("characterName")
@@ -7,19 +6,47 @@ function buscarPokemon() {
   const resultDiv = document.getElementById("result");
 
   if (pokemonNameOuNumero.trim() !== "") {
-
-    // Remove o display: none antes de começar a exibir os resultados
     resultDiv.style.display = "block";
-    
+
     resultDiv.innerHTML = `
         <div>
           <img src="img/carregando.gif" alt="Carregando...">
         </div>`;
 
+    let pokemonDataGlobal = null;
+
     fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNameOuNumero}`)
       .then((response) => response.json())
       .then((pokemonData) => {
-        exibirPokemon(pokemonData);
+        pokemonDataGlobal = pokemonData;
+        // Buscar a descrição do Pokémon
+        return fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonNameOuNumero}`);
+      })
+      .then((response) => response.json())
+      .then((speciesData) => {
+       
+        
+          // Find an English flavor text entry
+          const flavorTextEntry = speciesData.flavor_text_entries.find(
+            entry => entry.language.name === 'en'
+          ) 
+        
+        const englishDescription = flavorTextEntry
+          ? flavorTextEntry.flavor_text.replace(/\n|\f/g, " ")
+          : "Description not available.";
+
+        // Translate to Portuguese using MyMemory API
+        fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDescription)}&langpair=en|pt-BR`)
+        .then(response => response.json())
+        .then(data => {
+          const descricao = data.responseData?.translatedText || englishDescription;
+          exibirPokemon(pokemonDataGlobal, descricao);
+        })
+        .catch(error => {
+          console.error("Erro na tradução:", error);
+          // Fallback to English if translation fails
+          exibirPokemon(pokemonDataGlobal, englishDescription);
+        });
       })
       .catch((error) => {
         resultDiv.innerHTML =
@@ -28,32 +55,24 @@ function buscarPokemon() {
       });
   }
 
-  // Função para exibir os detalhes do Pokémon
-  function exibirPokemon(pokemonData) {
+  function exibirPokemon(pokemonData, descricao) {
     const { name, height, weight, types, id, sprites, base_experience, abilities } = pokemonData;
 
-    const abilitiesNames = abilities.map(ability => ability.ability.name).join(', ')
+    const abilitiesNames = abilities.map(ability => ability.ability.name).join(', ');
 
-    let PokemonImagem
+    let PokemonImagem;
 
     const imagemGif =
       pokemonData.sprites.versions["generation-v"]["black-white"].animated.front_default;
 
     if (imagemGif == null) {
       PokemonImagem = sprites.front_default;
-
-    }
-    else {
-      PokemonImagem = imagemGif
+    } else {
+      PokemonImagem = imagemGif;
     }
 
-    // para converter Decimetros é Hectogramas em Metros é Kg 
-    // é só dividir o valor de height e weight por 10
-
-    const altura = TrocarPontoPorVirgula(height / 10)
-
-    const peso = TrocarPontoPorVirgula(weight / 10)
-
+    const altura = TrocarPontoPorVirgula(height / 10);
+    const peso = TrocarPontoPorVirgula(weight / 10);
 
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = `
@@ -64,8 +83,8 @@ function buscarPokemon() {
           <p><strong>Nivel Base de Experiência:</strong> ${base_experience}</p>
           <p><strong>Habilidades:</strong> ${abilitiesNames}.</p>
           <p><strong>Tipo:</strong> ${types.map((type) => type.type.name).join(", ")}</p>
+          <p><strong>Descrição:</strong> ${descricao}</p>
           <p><strong>Numero:</strong> ${id}</p>
-          <!-- Adicione outras informações que desejar -->
         `;
 
     let dadosDoPokemon = `
@@ -75,38 +94,35 @@ function buscarPokemon() {
           Nivel Base de Experiência ${base_experience}
           Habilidades ${abilitiesNames}
           Tipo ${types.map((type) => type.type.name).join(", ")}
+          Descrição ${descricao}
           Numero na Pokedex ${id}
-        `
+        `;
 
     falarTexto(dadosDoPokemon);
   }
 }
 
 function TrocarPontoPorVirgula(valor) {
-  return valor.toString().replace(".", ",")
+  return valor.toString().replace(".", ",");
+}
+
+function exibirDescricao(descricao) {
+  return descricao
 }
 
 function falarTexto(dadosDoPokemon) {
-
-  // Verifica se o navegador suporta a Web Speech API
-  if ('speechSynthesis' in window) {    
-    // Cria um novo objeto SpeechSynthesisUtterance para definir o texto a ser falado
+  if ('speechSynthesis' in window) {
     let falar = new SpeechSynthesisUtterance(dadosDoPokemon);
-
-    // Fala o texto
     window.speechSynthesis.speak(falar);
   } else {
     console.log('Seu navegador não suporta a Web Speech API. Tente um navegador mais recente.');
   }
 }
 
-
-// Ouvinte de evento para o botão "Buscar"
 document
   .querySelector(".search-container button")
   .addEventListener("click", buscarPokemon);
 
-// Ouvinte de evento para a tecla "Enter"
 document
   .getElementById("characterName")
   .addEventListener("keypress", function (event) {
