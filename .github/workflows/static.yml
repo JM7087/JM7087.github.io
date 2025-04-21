@@ -30,7 +30,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Fazer upload do artefato para o GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v3 # Atualizado para v3
         with:
           path: './'  # Pasta onde está o seu index.html
 
