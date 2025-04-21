@@ -20,7 +20,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04  # Mais estável que a 24.04, evita bugs
 
     steps:
       - name: Checkout do código
@@ -30,9 +30,9 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Fazer upload do artefato para o GitHub Pages
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v2
         with:
-          path: './'  # Caminho do conteúdo estático, ex: pasta com index.html
+          path: './'  # Pasta onde está o seu index.html
 
       - name: Implantar no GitHub Pages
         id: deployment
