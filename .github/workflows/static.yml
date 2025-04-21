@@ -32,6 +32,14 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           path: '.'
+          
+      # Adicione esta etapa para resolver o problema de dependência
+      - name: Configurar upload-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: .
+          if-no-files-found: error
 
       - name: Implantar no GitHub Pages
         id: deployment
