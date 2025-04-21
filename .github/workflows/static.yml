@@ -30,7 +30,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Fazer upload do artefato para o GitHub Pages
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: './'  # Caminho do conteúdo estático, ex: pasta com index.html
 
