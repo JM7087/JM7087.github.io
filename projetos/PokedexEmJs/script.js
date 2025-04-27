@@ -24,29 +24,43 @@ function buscarPokemon() {
       })
       .then((response) => response.json())
       .then((speciesData) => {
-       
-        
-          // Find an English flavor text entry
-          const flavorTextEntry = speciesData.flavor_text_entries.find(
-            entry => entry.language.name === 'en'
-          ) 
-        
+        // Encontrar uma entrada de texto de descrição em inglês
+        const flavorTextEntry = speciesData.flavor_text_entries.find(
+          entry => entry.language.name === 'en'
+        )
+
         const englishDescription = flavorTextEntry
           ? flavorTextEntry.flavor_text.replace(/\n|\f/g, " ")
           : "Description not available.";
 
-        // Translate to Portuguese using MyMemory API
-        fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDescription)}&langpair=en|pt-BR`)
-        .then(response => response.json())
-        .then(data => {
-          const descricao = data.responseData?.translatedText || englishDescription;
-          exibirPokemon(pokemonDataGlobal, descricao);
-        })
-        .catch(error => {
-          console.error("Erro na tradução:", error);
-          // Fallback to English if translation fails
-          exibirPokemon(pokemonDataGlobal, englishDescription);
-        });
+        // Extrair tipos e habilidades para tradução
+        const tipos = pokemonDataGlobal.types.map(type => type.type.name);
+        const habilidades = pokemonDataGlobal.abilities.map(ability => ability.ability.name);
+
+        // Traduzir descrição, tipos e habilidades
+        Promise.all([
+          traduzirTexto(englishDescription),
+          Promise.all(tipos.map(tipo => traduzirTexto(tipo))),
+          Promise.all(habilidades.map(habilidade => traduzirTexto(habilidade)))
+        ])
+          .then(([descricaoTraduzida, tiposTraduzidos, habilidadesTraduzidas]) => {
+            exibirPokemon(
+              pokemonDataGlobal,
+              descricaoTraduzida,
+              tiposTraduzidos,
+              habilidadesTraduzidas
+            );
+          })
+          .catch(error => {
+            console.error("Erro na tradução:", error);
+            // Fallback para inglês se a tradução falhar
+            exibirPokemon(
+              pokemonDataGlobal,
+              englishDescription,
+              tipos,
+              habilidades.map(h => h)
+            );
+          });
       })
       .catch((error) => {
         resultDiv.innerHTML =
@@ -55,10 +69,25 @@ function buscarPokemon() {
       });
   }
 
-  function exibirPokemon(pokemonData, descricao) {
-    const { name, height, weight, types, id, sprites, base_experience, abilities } = pokemonData;
+  function traduzirTexto(texto) {
+    return fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=en|pt-BR`)
+      .then(response => response.json())
+      .then(data => {
+        return data.responseData?.translatedText || texto;
+      })
+      .catch(error => {
+        console.error("Erro na tradução:", error);
+        return texto; // Retorna o texto original em caso de erro
+      });
+  }
 
-    const abilitiesNames = abilities.map(ability => ability.ability.name).join(', ');
+  function exibirPokemon(pokemonData, descricao, tiposTraduzidos, habilidadesTraduzidas) {
+    const { name, height, weight, id, sprites, base_experience } = pokemonData;
+
+    // colocar habilidades traduzidas em uma variável
+    const habilitiesNomesTraduzidas = habilidadesTraduzidas.join(', ');
+    // colocar tipos traduzidos em uma variável
+    const tiposNomesTraduzidos = tiposTraduzidos.join(', ');
 
     let PokemonImagem;
 
@@ -81,8 +110,8 @@ function buscarPokemon() {
           <p><strong>Altura:</strong> ${altura} Metros</p>
           <p><strong>Peso:</strong> ${peso} Kg</p>
           <p><strong>Nivel Base de Experiência:</strong> ${base_experience}</p>
-          <p><strong>Habilidades:</strong> ${abilitiesNames}.</p>
-          <p><strong>Tipo:</strong> ${types.map((type) => type.type.name).join(", ")}</p>
+          <p><strong>Habilidades:</strong> ${habilitiesNomesTraduzidas}.</p>
+          <p><strong>Tipo:</strong> ${tiposNomesTraduzidos}</p>
           <p><strong>Descrição:</strong> ${descricao}</p>
           <p><strong>Numero:</strong> ${id}</p>
         `;
@@ -92,8 +121,8 @@ function buscarPokemon() {
           Altura ${altura} Metros
           Peso ${peso} Kg
           Nivel Base de Experiência ${base_experience}
-          Habilidades ${abilitiesNames}
-          Tipo ${types.map((type) => type.type.name).join(", ")}
+          Habilidades ${habilitiesNomesTraduzidas}
+          Tipo ${tiposNomesTraduzidos}
           Descrição ${descricao}
           Numero na Pokedex ${id}
         `;
