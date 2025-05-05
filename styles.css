@@ -14,8 +14,21 @@ body {
   height: 120px;
   border-radius: 50%;
   margin: 20px 0;
-  overflow: hidden;
-  border: 3px solid orange;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-img::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: linear-gradient(0deg, blue, orange);
+  z-index: -1;
+  animation: rotate-border 4s linear infinite;
 }
 
 .profile-img img {
@@ -23,6 +36,10 @@ body {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  background-color: #25003a; /* Mesma cor do fundo do site */
 }
 
 .links-container {
@@ -123,6 +140,15 @@ body {
   }
   100% {
     transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes rotate-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
